@@ -13,8 +13,6 @@ app.get('/', (req, res, next) => {
 
     Clase.find({})
         .populate('asginatura', 'nombre')
-        .populate('docente', 'nombre')
-        .populate('estudiante', 'nombre')
         .exec(
             (err, clases) => {
                 if (err) {
@@ -60,7 +58,7 @@ app.get('/:id', (req, res) => {
             ok: true,
             clase: clase
         });
-    });
+    }).populate('asignatura', 'nombre');
 });
 
 
@@ -89,12 +87,9 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         }
 
         clase.asignatura = req.asignatura._id;
-        clase.docente = req.docente._id;
         clase.horaInicio = body.horaInicio;
         clase.horaFin = body.horaFin;
-        clase.fecha = body.fecha;
         clase.seccion = body.seccion;
-        clase.estudiante = req.estudiante._id;
 
         clase.save((err, claseGuardada) => {
             if (err) {
@@ -122,12 +117,9 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 
     var clase = new Clase({
         asignatura: body.asignatura,
-        docente: body.docente,
         horaInicio: body.horaInicio,
         horaFin: body.horaFin,
-        fecha: body.fecha,
-        seccion: body.seccion,
-        estudiante: body.estudiante
+        seccion: body.seccion
     });
 
     clase.save((err, claseGuardada) => {

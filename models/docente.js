@@ -12,13 +12,15 @@ var docenteSchema = new Schema({
     cedula: { type: String, unique: true, required: [true, "La cédula es necesaria"] },
     nombres: { type: String, required: [true, "Los nombres son necesarios"] },
     apellidos: { type: String, required: [true, "Los apellidos son necesarios"] },
-    compania: { type: String, required: [true, "La compañia son necesarios"] },
+    // compania: { type: mongoose.Schema.ObjectId, ref: 'Asignatura' },
+    compania: { type: String, required: [true, "La compañia es necesaria"] },
     curso: { type: String, required: [true, "El curso son necesarios"] },
     seccion: { type: String, required: [true, "La sección son necesarios"] },
     ciudad: { type: String, required: [true, "La ciudad son necesarios"] },
     telefono: { type: String, unique: true, required: [true, "El teléfono son necesarios"] },
     email: { type: String, unique: true, required: [true, "El email son necesarios"] },
-    tipo: { type: String, required: true, default: 'Hora Cátedra', enum: tiposValidos }
+    tipo: { type: String, required: true, default: 'Hora Cátedra', enum: tiposValidos },
+    asignaturas: [{ type: mongoose.Schema.ObjectId, ref: 'Asignatura' }]
 });
 
 docenteSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' });

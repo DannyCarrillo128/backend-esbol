@@ -16,10 +16,11 @@ app.get('/', (req, res, next) => {
     Docente.find({})
         .skip(desde)
         .limit(5)
+        .populate('asignaturas', 'nombre')
         .exec(
             (err, docentes) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         ok: false,
                         mensaje: 'Error cargando Docentes',
                         errors: err
@@ -64,7 +65,7 @@ app.get('/:id', (req, res) => {
             ok: true,
             docente: docente
         });
-    });
+    }).populate('asignaturas');
 });
 
 
@@ -102,6 +103,8 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         docente.telefono = body.telefono;
         docente.email = body.email;
         docente.tipo = body.tipo;
+        docente.asignaturas = body.asignaturas;
+        //docente.asignaturas = req.asignaturas._id;
 
         docente.save((err, docenteGuardado) => {
             if (err) {
@@ -137,7 +140,8 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         ciudad: body.ciudad,
         telefono: body.telefono,
         email: body.email,
-        tipo: body.tipo
+        tipo: body.tipo,
+        asignaturas: body.asignaturas
     });
 
     docente.save((err, docenteGuardado) => {

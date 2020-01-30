@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var seccionSchema = new Schema({
     nombre: { type: String, required: [true, "El nombre es necesario"] }
-});
+}, { collection: 'secciones' });
 
 seccionSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' });
 
